@@ -1,4 +1,5 @@
-library(LDAvis)
+#Code for Topic Modeling using LDA (Gibbs Sampling method) and also implements wordcloud for visulaization of the results
+
 library(tm)
 library(NLP)
 library(topicmodels)
@@ -14,8 +15,8 @@ library(dplyr)
 library(tidyr)
 library(wordcloud)
 
-setwd("D:/Study/Knoesis/Zika/Data/Testing 31-10-2016/test")
-filenames <- list.files(getwd(),pattern="transmission.txt")
+setwd("folder path")
+filenames <- list.files(getwd(),pattern="*.txt")
 files <- lapply(filenames,readLines)
 docs <- Corpus(VectorSource(files))
 toremove <- content_transformer(function(x, pattern) { return (gsub(pattern, "", x))})
@@ -48,10 +49,10 @@ get.terms <- function(x) {
   rbind(as.integer(index - 1), as.integer(rep(1, length(index))))
 }
 documents <- lapply(doc.list, get.terms)
-D <- length(documents)  # number of documents (2,000)
-W <- length(vocab)  # number of terms in the vocab (14,568)
-doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document [312, 288, 170, 436, 291, ...]
-N <- sum(doc.length)  # total number of tokens in the data (546,827)
+D <- length(documents)  # number of documents 
+W <- length(vocab)  # number of terms in the vocab 
+doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document 
+N <- sum(doc.length)  # total number of tokens in the data 
 term.frequency <- as.integer(term.table)
 
 K <- 5
@@ -81,7 +82,7 @@ pal <- rep(brewer.pal(9, palette), each = ceiling(n / 9))[n:1]
 wd <- setwd(tempdir())
 unlink("*.png")
 for(i in 1:ncol(w1)){
-   file <- paste0("D:/Study/Knoesis/Zika/Data/Testing 31-10-2016/test/wordcloud/transmission/topic", i)
+   file <- paste0("destination path for wordcloud", i)
    png(paste0(file, ".png"), 8 * 100, 8 * 100, res = 100)
    par(bg = "grey95")
    w3 <- w2 %>%
@@ -89,6 +90,6 @@ for(i in 1:ncol(w1)){
       arrange(desc(weight))
    with(w3[1:n, ], 
         wordcloud(word, freq = weight, random.order = FALSE, ordered.colors = TRUE, colors = pal))
-   title(paste("Transmission: Topic", i))
+   title(paste("Topic", i))
    dev.off()
 }

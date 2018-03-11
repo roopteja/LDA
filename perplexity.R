@@ -1,14 +1,15 @@
+#Code for Topic Modeling using LDA (Gibbs Sampling method) and also implementing perrplexity to help us find the best number of topics
+
 library(tm)
 library(NLP)
 library(topicmodels)
 library(servr)
-#library(parallel)
 library(foreach)
 library(ggplot2)
 library(scales)
 library(doParallel)
 
-setwd("D:/Study/Knoesis/Zika/Data/Testing 31-10-2016/test")
+setwd("folder path")
 filenames <- list.files(getwd(),pattern="*.txt")
 files <- lapply(filenames,readLines)
 docs <- Corpus(VectorSource(files))

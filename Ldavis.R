@@ -1,3 +1,5 @@
+#Code for Topic Modeling using LDA (Gibbs Sampling method) and also implements LDAvis for an interactive visulaization of the results
+
 library(LDAvis)
 library(tm)
 library(NLP)
@@ -5,7 +7,7 @@ library(topicmodels)
 library(lda)
 library(servr)
 
-setwd("D:/Study/Knoesis/Zika/Data/other/single")
+setwd("folder path")
 filenames <- list.files(getwd(),pattern="*.txt")
 files <- lapply(filenames,readLines)
 docs <- Corpus(VectorSource(files))
@@ -44,10 +46,10 @@ get.terms <- function(x) {
   rbind(as.integer(index - 1), as.integer(rep(1, length(index))))
 }
 documents <- lapply(doc.list, get.terms)
-D <- length(documents)  # number of documents (2,000)
-W <- length(vocab)  # number of terms in the vocab (14,568)
-doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document [312, 288, 170, 436, 291, ...]
-N <- sum(doc.length)  # total number of tokens in the data (546,827)
+D <- length(documents)  # number of documents 
+W <- length(vocab)  # number of terms in the vocab 
+doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document 
+N <- sum(doc.length)  # total number of tokens in the data 
 term.frequency <- as.integer(term.table)
 
 K <- 5
@@ -64,7 +66,7 @@ fit <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab,
                                    eta = eta, initial = NULL, burnin = 0,
                                    compute.log.likelihood = TRUE)
 t2 <- Sys.time()
-t2 - t1  # about 24 minutes on laptop
+t2 - t1  # time taken
 theta <- t(apply(fit$document_sums + alpha, 2, function(x) x/sum(x)))
 phi <- t(apply(t(fit$topics) + eta, 2, function(x) x/sum(x)))
 zika <- list(phi = phi,
