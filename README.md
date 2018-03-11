@@ -1,4 +1,4 @@
-#Topic Modeling
+# Topic Modeling
 Topic modeling is a statistical method to discover the underlying abstract topics in a collection of documents (unlabelled text). Topic models uses contextual clues to connect similar meaning words and generates a topic for a cluster of words which co-occur frequently.
 
 ## LDA
